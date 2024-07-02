@@ -60,6 +60,15 @@ Step 6: Expose UI Services
 
 Step 8: Inplement CI/CD to automate the entire process
 
+
+Pre-req:
+    -> OCP cluster with OCP pipelines installed
+    -> git repo for the application code
+    -> docker registry to push images
+
+
+
+
  
 
 
