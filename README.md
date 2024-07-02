@@ -14,8 +14,7 @@ Container 3: Database (e.g., PostgreSQL, Port 5432)
 
 
 
-##############
-Step1: Describe Project Structure
+##############   Step1: Describe Project Structure
 
 3-tier/
 ├── ui/
