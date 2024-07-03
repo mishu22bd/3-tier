@@ -77,7 +77,15 @@ SET UP Openshift Project
         ----
 -> Setup ArgoCD
 -> Automate Deployments with Webhook
--> 
+-> Wekhook Steps:
+        Setting Up Webhooks
+        Go to your GitHub repository.
+        Navigate to Settings > Webhooks.
+        Click on "Add webhook".
+        Set the payload URL to the Tekton EventListener endpoint.
+        Choose application/json as the content type.
+        Select the events you want to trigger the webhook (e.g., push).
+
 
 
 
