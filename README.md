@@ -68,6 +68,19 @@ Pre-req:
 
 
 
+SET UP Openshift Project
+
+-> Create a new project
+-> Setup Tekton CI
+        ---install tekton pipeline in openshift
+        ---Create Tekton Pipeline
+        ----
+-> Setup ArgoCD
+-> Automate Deployments with Webhook
+-> 
+
+
+
 
  
 
