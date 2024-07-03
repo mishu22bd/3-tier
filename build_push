@@ -1,0 +1,15 @@
+# Build and push the UI image
+cd ui
+docker build -t <your-docker-registry>/3-tier-container/ui .
+docker push <your-docker-registry>/3-tier-container/ui
+
+# Build and push the API server image
+cd ../api
+docker build -t <your-docker-registry>/3-tier-container/api .
+docker push <your-docker-registry>/3-tier-container/api
+
+# Build and push the DB image
+cd ../db
+docker build -t <your-docker-registry>/3-tier-container/db .
+docker push <your-docker-registry>/3-tier-container/db
+

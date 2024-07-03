@@ -1,0 +1,10 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: github-pipeline-binding
+spec:
+  params:
+    - name: git-revision
+      value: $(body.head_commit.id)
+    - name: https://github.com/mishu22bd/3-tier-container.git
+      value: $(body.repository.url)

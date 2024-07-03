@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: oc-deploy
+spec:
+  params:
+    - name: DEPLOYMENT_CONFIG
+      type: string
+  steps:
+    - name: deploy
+      image: 'openshift/origin-cli'
+      script: |
+        oc rollout latest dc/$(params.DEPLOYMENT_CONFIG)

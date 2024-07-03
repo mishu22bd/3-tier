@@ -1,0 +1,10 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: postgres
+spec:
+  to:
+    kind: Service
+    name: postgres
+  port:
+    targetPort: 5432

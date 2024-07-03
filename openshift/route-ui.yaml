@@ -1,0 +1,10 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: react-ui
+spec:
+  to:
+    kind: Service
+    name: react-ui
+  port:
+    targetPort: 80

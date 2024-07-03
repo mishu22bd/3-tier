@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-docker-image
+spec:
+  params:
+    - name: IMAGE
+      type: string
+    - name: PATH
+      type: string
+  steps:
+    - name: build
+      image: 'docker'
+      script: |
+        docker build -t $(params.IMAGE) $(params.PATH)
+        docker push $(params.IMAGE)

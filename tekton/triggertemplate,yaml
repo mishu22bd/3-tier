@@ -1,0 +1,25 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: github-pipeline-template
+spec:
+  params:
+    - name: git-revision
+    - name: https://github.com/mishu22bd/3-tier-container.git
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: github-pipeline-run-
+      spec:
+        pipelineRef:
+          name: myapp-pipeline
+        resources:
+          - name: source-repo
+            resourceSpec:
+              type: git
+              params:
+                - name: url
+                  value: $(params.git-repo-url)
+                - name: revision
+                  value: $(params.git-revision)

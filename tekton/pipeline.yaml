@@ -1,0 +1,37 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: myapp-pipeline
+spec:
+  tasks:
+    - name: build-react-ui
+      taskRef:
+        name: build-docker-image
+      params:
+        - name: IMAGE
+          value: 'mishu22bd/3-tier-container/ui:latest'
+        - name: PATH
+          value: 'ui'   
+    - name: build-python-api
+      taskRef:
+        name: build-docker-image
+      params:
+        - name: IMAGE
+          value: 'mishu22bd/3-tier-container/api:latest'
+        - name: PATH
+          value: 'api'
+    - name: build-postgres
+      taskRef:
+        name: build-docker-image
+      params:
+        - name: IMAGE
+          value: 'mishu22bd/3-tier-container/db:latest'
+        - name: PATH
+          value: 'db'
+    - name: deploy-apps
+      runAfter: [build-react-ui, build-python-api, build-postgres]
+      taskRef:
+        name: oc-deploy
+      params:
+        - name: DEPLOYMENT_CONFIG
+          value: 'ui,api,db'
