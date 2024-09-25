@@ -1,0 +1,47 @@
+name: Update Pull-Secret with Entitlement Key as Input parameter
+
+on:
+  workflow_dispatch:
+    inputs:
+      entitlement_key:
+        description: "Entitlement Key"
+        required: true
+        type: string
+
+jobs:
+  update-pull-secret:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install OpenShift CLI
+        run: |
+          curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz
+          tar -xvf openshift-client-linux.tar.gz
+          sudo mv oc /usr/local/bin
+
+      - name: Authenticate with OpenShift
+        run: |
+          oc login --token=${{ secrets.OPENSHIFT_TOKEN }} --server=${{ secrets.OPENSHIFT_SERVER }}
+
+      - name: Check if pull-secret exists
+        id: check-secret
+        run: |
+          oc get secret pull-secret -n openshift-config || echo "not_found"
+        continue-on-error: true
+
+      - name: Update or Create IBM Entitlement Key in pull-secret
+        if: steps.check-secret.outputs.result != 'not_found'
+        run: |
+          oc extract secret/pull-secret -n openshift-config --keys=.dockerconfigjson --to=. --confirm
+          echo "Updating pull-secret with entitlement key"
+          ENTITLEMENT_KEY="${{ github.event.inputs.entitlement_key }}"
+          oc registry login --registry=cp.icr.io --auth-basic="cp:$ENTITLEMENT_KEY" --to=.dockerconfigjson
+          oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson
+        else:
+          run: |
+            echo "Creating ibm-entitlement-key secret"
+            oc create secret docker-registry ibm-entitlement-key \
+              --docker-username=cp \
+              --docker-password="${{ github.event.inputs.entitlement_key }}" \
+              --docker-server=cp.icr.io \
+              --namespace=openshift-config
